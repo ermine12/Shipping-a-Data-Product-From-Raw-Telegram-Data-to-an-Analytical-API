@@ -19,4 +19,21 @@ pytest
 httpx
 
 pyrogram
+
 telethon
+
+ultralytics
+
+opencv-python
+
+torch
+
+torchvision
+
+dagster
+
+dagster-webserver
+
+dagster-shell
+
+requests
