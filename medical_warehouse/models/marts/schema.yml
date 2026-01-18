@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: dim_dates
+    description: Date dimension generated from message timestamps.
+    columns:
+      - name: date_key
+        description: Surrogate key in YYYYMMDD format.
+        tests:
+          - unique
+          - not_null
+      - name: full_date
+        description: The full calendar date.
+      - name: is_weekend
+        description: Flag indicating weekend.
+
+  - name: dim_channels
+    description: Channel dimension summarizing per-channel attributes.
+    columns:
+      - name: channel_key
+        description: Surrogate key for channel dimension.
+        tests:
+          - unique
+          - not_null
+      - name: channel_id
+        description: Original Telegram channel id.
+        tests:
+          - not_null
+      - name: channel_name
+        description: Channel display or username.
+
+  - name: fct_messages
+    description: Fact table with one row per message.
+    columns:
+      - name: message_id
+        description: Telegram message id.
+        tests:
+          - unique
+          - not_null
+      - name: channel_key
+        description: Foreign key to dim_channels.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_channels')
+              field: channel_key
+      - name: date_key
+        description: Foreign key to dim_dates.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_dates')
+              field: date_key
+      - name: view_count
+        description: Message views.
+      - name: forward_count
+        description: Message forwards.
+      - name: has_image
+        description: Whether the message includes an image.
